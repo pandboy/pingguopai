@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xfl.pingguopai.dao.OrderTaskMapper">
+  <resultMap id="BaseResultMap" type="com.xfl.pingguopai.model.OrderTask">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="task_status" jdbcType="BIT" property="taskStatus" />
+  </resultMap>
+</mapper>
