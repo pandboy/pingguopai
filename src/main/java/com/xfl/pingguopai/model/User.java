@@ -25,7 +25,7 @@ public class User extends BaseModel{
     private String empName;
 
     @Column(name = "user_type")
-    private Boolean userType;
+    private Integer userType;
 
     /**
      * 获取用户名用手机号
@@ -80,14 +80,14 @@ public class User extends BaseModel{
     /**
      * @return user_type
      */
-    public Boolean getUserType() {
+    public Integer getUserType() {
         return userType;
     }
 
     /**
      * @param userType
      */
-    public void setUserType(Boolean userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 }

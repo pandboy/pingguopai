@@ -10,7 +10,6 @@ import org.springframework.util.Assert;
  */
 @Component
 public class CacheHelper {
-    private static final long EXPIRE_TIME_TEN_HOUR = 10 * 60 * 60 * 1000;
     private static final long EXPIRE_TIME_ONE_DAY = 24 * 60 * 60 * 1000;
 
     private static final long MAX_SIZE_NEVER = -1;
@@ -30,4 +29,7 @@ public class CacheHelper {
         loginSessionCache.put(token, user);
     }
 
+    public void removeSession(String token) {
+        loginSessionCache.remove(token);
+    }
 }

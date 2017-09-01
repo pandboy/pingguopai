@@ -27,7 +27,7 @@ public class UserController {
     private UserGpsService userGpsService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody User user) {
+    public Result add(User user) {
         userService.save(user);
         return ResultGenerator.genSuccessResult();
     }

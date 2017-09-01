@@ -8,13 +8,19 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 import com.xfl.pingguopai.common.Result;
 import com.xfl.pingguopai.common.ResultCode;
 import com.xfl.pingguopai.common.ServiceException;
+import com.xfl.pingguopai.model.User;
+import com.xfl.pingguopai.service.CacheHelper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +30,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +49,9 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
+
+    @Autowired(required = false)
+    private CacheHelper cacheHelper;
 
     //使用阿里 FastJson 作为JSON MessageConverter
     @Override
@@ -109,7 +119,13 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                     //验证签名
                     boolean pass = validateSign(request);
                     if (pass) {
-                        return true;
+                        if (hasAuth(request, response)) {
+                            return true;
+                        }
+                        Result result = new Result();
+                        result.setCode(ResultCode.PERMIT).setMessage("拒绝访问");
+                        responseResult(response, result);
+                        return false;
                     } else {
                         logger.warn("签名认证失败，请求接口：{}，请求IP：{}，请求参数：{}",
                                 request.getRequestURI(), getIpAddress(request), JSON.toJSONString(request.getParameterMap()));
@@ -119,6 +135,40 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                         responseResult(response, result);
                         return false;
                     }
+                }
+
+                private boolean hasAuth(HttpServletRequest request, HttpServletResponse response) {
+                    String url = request.getRequestURI();
+                    if (url.startsWith("/login")) {
+                        return true;
+                    }
+                    if (url.startsWith("/api/")) {
+                        String token = request.getHeader("token");
+                        User user = cacheHelper.getSessionUser(token);
+                        if (user != null) {
+                            if (user.getUserType() == 1) {
+                                return true;
+                            } else if (user.getUserType() == 3) {
+                                if (url.startsWith("/api/normal/")) {
+                                    return true;
+                                } else {
+                                    Result result = new Result();
+                                    result.setCode(ResultCode.PERMIT).setMessage("无权限访问");
+                                    responseResult(response, result);
+                                    return false;
+                                }
+                            }
+                        } else {
+                            Result result = new Result();
+                            result.setCode(ResultCode.UNAUTHORIZED).setMessage("请登录");
+                            responseResult(response, result);
+                            return false;
+                        }
+                    }
+                    Result result = new Result();
+                    result.setCode(ResultCode.NOT_FOUND).setMessage("非法路径请求");
+                    responseResult(response, result);
+                    return false;
                 }
             });
         }

@@ -9,4 +9,6 @@ import com.xfl.pingguopai.common.AbstractService;
 public interface UserService extends AbstractService<User, Long> {
 
     String loginCheck(String username, String password);
+
+    void deleteByToken(String token);
 }
