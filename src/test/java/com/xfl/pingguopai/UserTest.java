@@ -30,7 +30,7 @@ public class UserTest extends Tester {
     @Test
     public void testUserAdd() {
         User user = new User();
-        user.setUserName("timely");
+        user.setUsername("timely");
         user.setPassword("abc123");
         user.setEmpName("my timely");
         user.setEmpName("my timely");
@@ -51,7 +51,7 @@ public class UserTest extends Tester {
     @Test
     public void testUserUpdate() throws Exception {
         User user = new User();
-        user.setUserName("helloworld");
+        user.setUsername("helloworld");
         user.setPassword("abc123");
         user.setEmpName("xfl");
         userService.save(user);

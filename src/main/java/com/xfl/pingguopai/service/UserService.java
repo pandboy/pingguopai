@@ -4,11 +4,8 @@ import com.xfl.pingguopai.common.AbstractService;
 
 
 /**
- * Created by timely
+ * Created by pandboy
  */
-public interface UserService extends AbstractService<User, Long> {
+public interface UserService  extends AbstractService<User, Long> {
 
-    String loginCheck(String username, String password);
-
-    void deleteByToken(String token);
 }

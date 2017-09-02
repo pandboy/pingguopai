@@ -50,8 +50,6 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Value("${spring.profiles.active}")
     private String env;//当前激活的配置文件
 
-    @Autowired(required = false)
-    private CacheHelper cacheHelper;
 
     //使用阿里 FastJson 作为JSON MessageConverter
     @Override
@@ -119,13 +117,13 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                     //验证签名
                     boolean pass = validateSign(request);
                     if (pass) {
-                        if (hasAuth(request, response)) {
+                        /*if (hasAuth(request, response)) {
                             return true;
                         }
                         Result result = new Result();
                         result.setCode(ResultCode.PERMIT).setMessage("拒绝访问");
-                        responseResult(response, result);
-                        return false;
+                        responseResult(response, result);*/
+                        return true;
                     } else {
                         logger.warn("签名认证失败，请求接口：{}，请求IP：{}，请求参数：{}",
                                 request.getRequestURI(), getIpAddress(request), JSON.toJSONString(request.getParameterMap()));
@@ -137,7 +135,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                     }
                 }
 
-                private boolean hasAuth(HttpServletRequest request, HttpServletResponse response) {
+               /* private boolean hasAuth(HttpServletRequest request, HttpServletResponse response) {
                     String url = request.getRequestURI();
                     if (url.startsWith("/login")) {
                         return true;
@@ -169,7 +167,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                     result.setCode(ResultCode.NOT_FOUND).setMessage("非法路径请求");
                     responseResult(response, result);
                     return false;
-                }
+                }*/
             });
         }
     }

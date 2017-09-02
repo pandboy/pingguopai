@@ -11,23 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
-* Created by timely
+* Created by pandboy
 */
-@RestController
-@RequestMapping("/login")
+//@RestController
+//@RequestMapping("/login")
+    //use spring security login
+    @Deprecated
 public class LoginController {
-    @Resource
-    private UserService userService;
 
-    @PostMapping("/check")
-    public Result check(@RequestParam String username, @RequestParam String password) {
-        String token = userService.loginCheck(username, password);
-        return ResultGenerator.genSuccessResult(token);
-    }
-
-    @PostMapping("/logout")
-    public Result delete(@RequestParam String token) {
-        userService.deleteByToken(token);
-        return ResultGenerator.genSuccessResult();
-    }
 }

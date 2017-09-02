@@ -2,18 +2,21 @@ package com.xfl.pingguopai.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xfl.pingguopai.common.BaseModel;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "t_user")
-public class User extends BaseModel{
+public class User  extends BaseModel implements UserDetails{
 
     /**
      * 用户名用手机号
      */
-    @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     @JsonIgnore
     private String password;
@@ -24,25 +27,35 @@ public class User extends BaseModel{
     @Column(name = "emp_name")
     private String empName;
 
-    @Column(name = "user_type")
-    private Integer userType;
+    private Boolean enabled;
+
+    @Transient
+    private Date lastPasswordResetDate;
+
+    @Transient
+    private List<Authority> authorities;
 
     /**
      * 获取用户名用手机号
      *
      * @return user_name - 用户名用手机号
      */
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     /**
      * 设置用户名用手机号
      *
-     * @param userName 用户名用手机号
+     * @param username 用户名用手机号
      */
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
     }
 
     /**
@@ -51,6 +64,30 @@ public class User extends BaseModel{
     public String getPassword() {
         return password;
     }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
+
 
     /**
      * @param password
@@ -77,17 +114,19 @@ public class User extends BaseModel{
         this.empName = empName;
     }
 
-    /**
-     * @return user_type
-     */
-    public Integer getUserType() {
-        return userType;
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
-    /**
-     * @param userType
-     */
-    public void setUserType(Integer userType) {
-        this.userType = userType;
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

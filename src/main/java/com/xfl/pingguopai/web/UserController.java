@@ -7,6 +7,7 @@ import com.xfl.pingguopai.service.UserGpsService;
 import com.xfl.pingguopai.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
@@ -18,7 +19,8 @@ import java.util.List;
 * Created by timely
 */
 @RestController
-@RequestMapping("/api/admin/user")
+@RequestMapping("/auth/user")
+@PreAuthorize("hasRole('ADMIN')")
 public class UserController {
     @Resource
     private UserService userService;
