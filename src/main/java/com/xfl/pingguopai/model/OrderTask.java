@@ -39,7 +39,7 @@ public class OrderTask {
      * 任务状态
      */
     @Column(name = "task_status")
-    private Boolean taskStatus;
+    private Integer taskStatus;
 
     /**
      * @return id
@@ -180,7 +180,7 @@ public class OrderTask {
      *
      * @return task_status - 任务状态
      */
-    public Boolean getTaskStatus() {
+    public Integer getTaskStatus() {
         return taskStatus;
     }
 
@@ -189,7 +189,7 @@ public class OrderTask {
      *
      * @param taskStatus 任务状态
      */
-    public void setTaskStatus(Boolean taskStatus) {
+    public void setTaskStatus(Integer taskStatus) {
         this.taskStatus = taskStatus;
     }
 }

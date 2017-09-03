@@ -3,6 +3,7 @@ package com.xfl.pingguopai.common;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.xfl.pingguopai.helper.PageSO;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public abstract class AbstractServiceImpl<T, PK extends Serializable> implements
         modelClass = (Class<T>) pt.getActualTypeArguments()[0];
     }
 
-    public void save(T model) {
+    public int save(T model) {
         if (model instanceof BaseModel) {
             Date date = Calendar.getInstance().getTime();
             BaseModel baseModel = (BaseModel)model;
@@ -38,7 +39,7 @@ public abstract class AbstractServiceImpl<T, PK extends Serializable> implements
             baseModel.setUpdateTime(date);
             model = (T)baseModel;
         }
-        mapper.insertSelective(model);
+        return mapper.insertSelective(model);
 
     }
 
@@ -94,7 +95,7 @@ public abstract class AbstractServiceImpl<T, PK extends Serializable> implements
     }
 
     @Override
-    public PageInfo<T> selectPage(Condition condition, Page page) {
+    public PageInfo<T> selectPage(Condition condition, PageSO page) {
         RowBounds rowBounds = new RowBounds((page.getPageNum() -1) * page.getPageSize(),
                 page.getPageSize());
         List<T> list = mapper.selectByExampleAndRowBounds(condition, rowBounds);
@@ -105,7 +106,7 @@ public abstract class AbstractServiceImpl<T, PK extends Serializable> implements
     }
 
     @Override
-    public List<T> selectByPage(Condition condition, Page page) {
+    public List<T> selectByPage(Condition condition, PageSO page) {
         RowBounds rowBounds = new RowBounds((page.getPageNum() -1) * page.getPageSize(),
                 page.getPageSize());
         List<T> list = mapper.selectByExampleAndRowBounds(condition, rowBounds);

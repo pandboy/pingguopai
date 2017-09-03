@@ -1,37 +1,41 @@
 package com.xfl.pingguopai.web;
+
+import com.github.pagehelper.PageInfo;
 import com.xfl.pingguopai.common.Result;
 import com.xfl.pingguopai.common.ResultGenerator;
 import com.xfl.pingguopai.model.Order;
 import com.xfl.pingguopai.service.OrderService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.xfl.pingguopai.helper.OrderSO;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
 * Created by timely
 */
 @RestController
-@RequestMapping("/api/admin/order")
+@RequestMapping("/auth/order")
 public class OrderController {
     @Resource
     private OrderService orderService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody Order order) {
-        orderService.save(order);
-        return ResultGenerator.genSuccessResult();
+    @PreAuthorize("hasRole('ADMIN')")
+    public Result add(@RequestBody Order order, @RequestParam Long userId) {
+        orderService.saveAndAssign(order, userId);
+        return ResultGenerator.genSuccessResult(order);
     }
 
-   // @PostMapping("/delete")
+    @PostMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public Result delete(@RequestParam Long id) {
         orderService.deleteById(id);
         return ResultGenerator.genSuccessResult();
     }
 
-    @PostMapping("/update")
+  //  @PostMapping("/update")
+    //@PreAuthorize("hasRole('ADMIN')")
     public Result update(Order order) {
         orderService.update(order);
         return ResultGenerator.genSuccessResult();
@@ -39,16 +43,16 @@ public class OrderController {
 
 
     @PostMapping("/list")
-    public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-        PageHelper.startPage(page, size);
-        List<Order> list = orderService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
+    @PreAuthorize("hasRole('USER')")
+    public Result list(OrderSO so) {
+        PageInfo<Order> pageInfo = orderService.getOrderList(so);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 
-    @PostMapping("/assign")
-    public Result assign(@RequestParam Long orderId, @RequestParam Long userId) {
-        int rtn = orderService.assign(orderId, userId);
+    @PostMapping("/execute")
+    @PreAuthorize("hasRole('ADMIN', 'USER')")
+    public Result execute(@RequestParam Long orderId, @RequestParam Integer orderStatus) {
+        int rtn = orderService.excute(orderId, orderStatus);
 
         return rtn == 1 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("分配失败");
     }

@@ -1,5 +1,7 @@
 package com.xfl.pingguopai.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 import javax.persistence.*;
 

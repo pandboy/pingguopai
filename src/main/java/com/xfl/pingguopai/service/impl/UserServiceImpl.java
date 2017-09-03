@@ -1,33 +1,25 @@
 package com.xfl.pingguopai.service.impl;
 
 import com.xfl.pingguopai.common.AbstractServiceImpl;
-import com.xfl.pingguopai.common.ServiceException;
-import com.xfl.pingguopai.dao.LoginSessionMapper;
 import com.xfl.pingguopai.dao.UserMapper;
 import com.xfl.pingguopai.model.Authority;
-import com.xfl.pingguopai.model.LoginSession;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.model.UserAuthority;
 import com.xfl.pingguopai.service.AuthorityService;
 import com.xfl.pingguopai.service.CacheHelper;
 import com.xfl.pingguopai.service.UserAuthorityService;
 import com.xfl.pingguopai.service.UserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.apache.commons.codec.digest.Md5Crypt;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
+import com.xfl.pingguopai.helper.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Condition;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -69,23 +61,29 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long>
         }
     }
 
+
+
    protected List<Authority> getAuthByUser(long userId) {
        Condition condition = new Condition(UserAuthority.class);
        condition.createCriteria().andEqualTo("userId", userId);
        List<UserAuthority> userAuthorities = userAuthorityService.findByCondition(condition);
        List<Authority> authorities = new ArrayList<>(userAuthorities.size());
        userAuthorities.stream().forEach(userAuthority -> {
-           authorities.add(authorityService.findById(userAuthority.getId()));
+           authorities.add(authorityService.findById(userAuthority.getAuthorityId()));
        });
        return authorities;
     }
 
     @Override
-    public void save(User model) {
+    public int save(User model) {
         String password = model.getPassword();
         model.setVersion(0);
-        model.setPassword(BCrypt.hashpw(password, salt));
-        super.save(model);
+        model.setUserType(UserType.USER.value());
+        String mysalt = new BCryptPasswordEncoder().encode(password);
+        model.setPassword(BCrypt.hashpw(password, mysalt));
+        int rtn = super.save(model);
+        userAuthorityService.grantNormalAuth(model.getId());
+        return rtn;
     }
 
     @Override

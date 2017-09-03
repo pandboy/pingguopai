@@ -18,11 +18,13 @@ public class BaseModel implements Serializable {
     private String creator;
 
     @Column(name = "create_time")
+    @LongDateTimeFormat
     private Date createTime;
 
     private String updater;
 
     @Column(name = "update_time")
+    @LongDateTimeFormat
     private Date updateTime;
 
     private Integer version;

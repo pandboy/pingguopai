@@ -4,6 +4,8 @@ package com.xfl.pingguopai.security.auth;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xfl.pingguopai.common.Result;
+import com.xfl.pingguopai.common.ResultCode;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.model.UserTokenState;
 import com.xfl.pingguopai.security.TokenHelper;
@@ -46,7 +48,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		String jws = tokenHelper.generateToken( user.getUsername() );
 
         // Create token auth Cookie
-        Cookie authCookie = new Cookie( TOKEN_COOKIE, ( jws ) );
+        /*Cookie authCookie = new Cookie( TOKEN_COOKIE, ( jws ) );
 		authCookie.setPath( "/" );
 		authCookie.setHttpOnly( true );
 		authCookie.setMaxAge( EXPIRES_IN );
@@ -56,10 +58,13 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		userCookie.setMaxAge( EXPIRES_IN );
 		// Add cookie to response
 		response.addCookie( authCookie );
-		response.addCookie( userCookie );
+		response.addCookie( userCookie );*/
 		// JWT is also in the response
 		UserTokenState userTokenState = new UserTokenState(jws, EXPIRES_IN);
-		String jwtResponse = objectMapper.writeValueAsString( userTokenState );
+		Result result = new Result();
+		result.setCode(ResultCode.SUCCESS);
+		result.setData(userTokenState);
+		String jwtResponse = objectMapper.writeValueAsString( result );
 		response.setContentType("application/json");
 		response.getWriter().write( jwtResponse );
 	}

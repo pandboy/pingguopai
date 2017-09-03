@@ -133,20 +133,20 @@ public class TokenHelper {
         /**
          *  Getting the token from Cookie store
          */
-        Cookie authCookie = getCookieValueByName( request, AUTH_COOKIE );
+        /*Cookie authCookie = getCookieValueByName( request, AUTH_COOKIE );
         if ( authCookie != null ) {
             return authCookie.getValue();
-        }
+        }*/
         /**
          *  Getting the token from Authentication header
          *  e.g Bearer your_token
          */
         String authHeader = request.getHeader(AUTH_HEADER);
-        if ( authHeader != null && authHeader.startsWith("Bearer ")) {
+        /*if ( authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
-        }
+        }*/
 
-        return null;
+        return authHeader;
     }
 
     /**

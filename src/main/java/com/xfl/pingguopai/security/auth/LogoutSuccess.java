@@ -1,6 +1,8 @@
 package com.xfl.pingguopai.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xfl.pingguopai.common.Result;
+import com.xfl.pingguopai.common.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -25,8 +27,8 @@ public class LogoutSuccess implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-        Map<String, String> result = new HashMap<>();
-        result.put( "result", "success" );
+        Result result = new Result();
+        result.setCode(ResultCode.SUCCESS);
         response.setContentType("application/json");
         response.getWriter().write( objectMapper.writeValueAsString( result ) );
         response.setStatus(HttpServletResponse.SC_OK);

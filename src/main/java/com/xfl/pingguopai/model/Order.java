@@ -58,7 +58,13 @@ public class Order {
      * 订单状态
      */
     @Column(name = "order_status")
-    private Boolean orderStatus;
+    private Integer orderStatus;
+
+    /**
+     * 分配对应的人
+     */
+    @Transient
+    private User user;
 
     /**
      * @return id
@@ -267,7 +273,7 @@ public class Order {
      *
      * @return order_status - 订单状态
      */
-    public Boolean getOrderStatus() {
+    public Integer getOrderStatus() {
         return orderStatus;
     }
 
@@ -276,7 +282,15 @@ public class Order {
      *
      * @param orderStatus 订单状态
      */
-    public void setOrderStatus(Boolean orderStatus) {
+    public void setOrderStatus(Integer orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

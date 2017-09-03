@@ -29,6 +29,7 @@ public class UserTest extends Tester {
     }
     @Test
     public void testUserAdd() {
+        buildTestAdmin();
         User user = new User();
         user.setUsername("timely");
         user.setPassword("abc123");
@@ -37,7 +38,7 @@ public class UserTest extends Tester {
         String json = JSON.toJSONString(user);
         logger.info("*****json is {}", json);
         try {
-            mockMvc.perform(post("/api/admin/user/add")
+            mockMvc.perform(post("/auth/user/add")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json))
                 .andExpect(status().isOk());
@@ -56,7 +57,7 @@ public class UserTest extends Tester {
         user.setEmpName("xfl");
         userService.save(user);
         user.setEmpName("hibaby");
-        mockMvc.perform(post("/api/admin/user/update")
+        mockMvc.perform(post("/auth/user/update")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(user)))
                 .andExpect(status().isOk());
@@ -70,7 +71,7 @@ public class UserTest extends Tester {
         PageInfo info = new PageInfo();
         info.setPageNum(0);
         info.setPageSize(10);
-        mockMvc.perform(post("/api/admin/user/list")
+        mockMvc.perform(post("/auth/user/list")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(info)))
                 .andExpect(status().isOk())

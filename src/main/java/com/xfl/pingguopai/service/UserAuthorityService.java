@@ -8,4 +8,5 @@ import com.xfl.pingguopai.common.AbstractService;
  */
 public interface UserAuthorityService extends AbstractService<UserAuthority, Long> {
 
+    void grantNormalAuth(Long userId);
 }

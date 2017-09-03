@@ -2,6 +2,7 @@ package com.xfl.pingguopai.service.impl;
 
 import com.github.pagehelper.Page;
 import com.xfl.pingguopai.dao.UserGpsMapper;
+import com.xfl.pingguopai.helper.PageSO;
 import com.xfl.pingguopai.model.UserGps;
 import com.xfl.pingguopai.service.UserGpsService;
 import com.xfl.pingguopai.common.AbstractServiceImpl;
@@ -28,7 +29,7 @@ public class UserGpsServiceImpl extends AbstractServiceImpl<UserGps, Long> imple
         Condition condition = new Condition(UserGps.class);
         condition.createCriteria().andEqualTo("userId", userId);
         condition.orderBy("createTime").desc();
-        Page page = new Page(1,1);
+        PageSO page = new PageSO(1,1);
         List<UserGps> userGpsList = selectByPage(condition, page);
         UserGps userGps = null;
         if (!CollectionUtils.isEmpty(userGpsList)) {

@@ -27,12 +27,15 @@ public class User  extends BaseModel implements UserDetails{
     @Column(name = "emp_name")
     private String empName;
 
-    private Boolean enabled;
+    @Column(name = "user_type")
+    private Integer userType;
 
     @Transient
+    @JsonIgnore
     private Date lastPasswordResetDate;
 
     @Transient
+    @JsonIgnore
     private List<Authority> authorities;
 
     /**
@@ -67,21 +70,25 @@ public class User  extends BaseModel implements UserDetails{
 
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
@@ -126,7 +133,13 @@ public class User  extends BaseModel implements UserDetails{
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    public Integer getUserType() {
+        return userType;
     }
+
+    public void setUserType(Integer userType) {
+        this.userType = userType;
+    }
+
+
 }

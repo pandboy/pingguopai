@@ -7,7 +7,9 @@ import com.xfl.pingguopai.service.UserGpsService;
 import com.xfl.pingguopai.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
@@ -20,7 +22,6 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/auth/user")
-@PreAuthorize("hasRole('ADMIN')")
 public class UserController {
     @Resource
     private UserService userService;
@@ -28,25 +29,38 @@ public class UserController {
     @Resource
     private UserGpsService userGpsService;
 
+    @RequestMapping("/whoami")
+   // @PreAuthorize("hasRole('USER', 'ADMIN')")
+    public User user() {
+        return (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+    }
+
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public Result add(User user) {
         userService.save(user);
-        return ResultGenerator.genSuccessResult();
+        return ResultGenerator.genSuccessResult(user);
     }
 
     @PostMapping("/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public Result delete(@RequestParam Long id) {
         userService.deleteById(id);
         return ResultGenerator.genSuccessResult();
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public Result update(@RequestBody User user) {
         userService.update(user);
         return ResultGenerator.genSuccessResult();
     }
 
     @PostMapping("/list")
+    @PreAuthorize("hasRole('ADMIN')")
     public Result list(@RequestParam(defaultValue = "0") Integer pageNum, @RequestParam(defaultValue = "0") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> list = userService.findAll();
