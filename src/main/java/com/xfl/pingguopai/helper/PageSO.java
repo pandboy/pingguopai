@@ -11,7 +11,7 @@ public class PageSO {
     /**
      * 页面大小
      */
-    private int pageSize = 50;
+    private int pageSize;
     /**
      * 起始行
      */
@@ -54,7 +54,7 @@ public class PageSO {
     private Boolean pageSizeZero;
 
     public PageSO() {
-        super();
+        this(1, 50, true, null);
     }
 
     public PageSO(int pageNum, int pageSize) {
