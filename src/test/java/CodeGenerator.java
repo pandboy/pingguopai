@@ -38,7 +38,7 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
         //genCode("user");
-        genCode("t_login_session","LoginSession");
+        genCode("t_user_authority","UserAuthority");
     }
 
     /**
