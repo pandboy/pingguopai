@@ -1,6 +1,7 @@
 # pingguopai
 ## 简介
-pingguopai是学习使用spring boot 如何结合使用spring mvc, mybatis, druid数据源的项目，是基于https://github.com/lihengming/spring-boot-api-project-seed/ 项目开发调整的
+   pingguopai是学习使用spring boot 如何结合使用spring mvc, spring security, jwt mybatis, druid数据源的项目，
+一键代码生成，简化开发，专注业务实现。
 ## 新特性
 - 添加model基类，保存更新记录更新时间
 - 添加分页接口，重写分页查询基础类。
@@ -17,3 +18,4 @@ pingguopai是学习使用spring boot 如何结合使用spring mvc, mybatis, drui
 - Druid Spring Boot Starter（[查看官方中文文档](https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter/)）
 - jackson
 - spring security
+- 参考项目：https://github.com/lihengming/spring-boot-api-project-seed/
