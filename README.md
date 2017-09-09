@@ -14,8 +14,6 @@
 - Spring Boot
 - MyBatis（[查看官方中文文档](http://www.mybatis.org/mybatis-3/zh/index.html)）
 - MyBatisb通用Mapper插件（[查看官方中文文档](https://mapperhelper.github.io/docs/)）
-- MyBatis PageHelper分页插件（[查看官方中文文档](https://pagehelper.github.io/)）[后续会废除自己封装]
-- Druid Spring Boot Starter（[查看官方中文文档](https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter/)）
 - jackson
 - spring security
 - 参考项目：https://github.com/lihengming/spring-boot-api-project-seed/
