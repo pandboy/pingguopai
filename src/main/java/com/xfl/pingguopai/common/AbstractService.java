@@ -1,6 +1,6 @@
 package com.xfl.pingguopai.common;
 
-import com.github.pagehelper.PageInfo;
+import com.xfl.pingguopai.helper.PageList;
 import com.xfl.pingguopai.helper.PageSO;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import tk.mybatis.mapper.entity.Condition;
@@ -23,7 +23,7 @@ public interface AbstractService<T, PK extends Serializable> {
     List<T> findByCondition(Condition condition);//根据条件查找
     List<T> findAll();//获取所有
 
-    PageInfo<T> selectPage(Condition condition, PageSO page);
+    PageList<T> selectPage(Condition condition, PageSO page);
 
     List<T> selectByPage(Condition condition, PageSO page);
 }

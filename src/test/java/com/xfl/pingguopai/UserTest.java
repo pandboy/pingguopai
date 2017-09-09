@@ -1,6 +1,8 @@
 package com.xfl.pingguopai;
 
+import com.alibaba.druid.util.HttpClientUtils;
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.service.UserService;
@@ -9,6 +11,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 
 import static org.hamcrest.Matchers.is;
@@ -29,18 +32,22 @@ public class UserTest extends Tester {
     }
     @Test
     public void testUserAdd() {
-        buildTestAdmin();
         User user = new User();
-        user.setUsername("timely");
+        user.setUsername("中国");
         user.setPassword("abc123");
         user.setEmpName("my timely");
         user.setEmpName("my timely");
-        String json = JSON.toJSONString(user);
-        logger.info("*****json is {}", json);
+        //String json = JSON.toJSONString(user);
+       // logger.info("*****json is {}", json);
+      //  String params = "username=addtest2&passwordaddtest2&empName=addtest2";
+
         try {
+            String json = (new ObjectMapper()).writeValueAsString(user);
+
             mockMvc.perform(post("/auth/user/add")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(json))
+                    .param("username", "中国")
+                    .param("password", "abc123")
+                    .param("empName", "my timely"))
                 .andExpect(status().isOk());
 
         }catch (Exception ex) {
@@ -75,7 +82,6 @@ public class UserTest extends Tester {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(info)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.data.total", is(1)));
     }
 }

@@ -54,6 +54,7 @@ public abstract class Tester {
         securityContext = Mockito.mock( SecurityContext.class );
         SecurityContextHolder.setContext( securityContext );
         Mockito.when( securityContext.getAuthentication() ).thenReturn( new AnonAuthentication() );
+        mockAuthenticatedUser(buildTestAdmin());
     }
 
     public void login() {

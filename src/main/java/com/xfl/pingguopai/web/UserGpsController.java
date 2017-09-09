@@ -18,7 +18,7 @@ import java.util.List;
 * Created by timely
 */
 @RestController
-@RequestMapping("/auth/normal/user/gps")
+@RequestMapping("/auth/user/gps")
 @PreAuthorize("hasRole('ADMIN', 'USER')")
 
 public class UserGpsController {
@@ -26,7 +26,7 @@ public class UserGpsController {
     private UserGpsService userGpsService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody UserGps userGps) {
+    public Result add(UserGps userGps) {
         userGpsService.save(userGps);
         return ResultGenerator.genSuccessResult();
     }

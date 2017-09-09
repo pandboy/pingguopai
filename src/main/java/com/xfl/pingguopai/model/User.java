@@ -39,6 +39,12 @@ public class User  extends BaseModel implements UserDetails{
     private List<Authority> authorities;
 
     /**
+     * 某段时间内所拥有的订单
+     */
+    @Transient
+    private List<Order> orders;
+
+    /**
      * 获取用户名用手机号
      *
      * @return user_name - 用户名用手机号
@@ -142,4 +148,27 @@ public class User  extends BaseModel implements UserDetails{
     }
 
 
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return username.equals(user.username);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode();
+    }
 }
