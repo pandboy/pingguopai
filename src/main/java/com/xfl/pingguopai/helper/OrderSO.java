@@ -13,6 +13,8 @@ public class OrderSO extends PageSO {
     @LongDateTimeFormat
     private Date endTime;
 
+    private Long userId;
+
     public Date getBeginTime() {
         return beginTime;
     }
@@ -27,5 +29,13 @@ public class OrderSO extends PageSO {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

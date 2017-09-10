@@ -4,7 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.xfl.pingguopai.common.Result;
 import com.xfl.pingguopai.common.ResultGenerator;
 import com.xfl.pingguopai.helper.PageList;
+import com.xfl.pingguopai.helper.SecurityContextUtil;
 import com.xfl.pingguopai.model.Order;
+import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.service.OrderService;
 import com.xfl.pingguopai.helper.OrderSO;
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * Created by timely
@@ -47,10 +50,18 @@ public class OrderController {
 
 
     @PostMapping("/list")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public Result list(OrderSO so) {
         PageList<Order> pageInfo = orderService.getOrderList(so);
         return ResultGenerator.genSuccessResult(pageInfo);
+    }
+    @PostMapping("/myOrders")
+    @PreAuthorize("hasRole('USER')")
+    public Result getMyOrders(OrderSO so) {
+        User user = SecurityContextUtil.logingUser();
+        so.setUserId(user.getId());
+        List<Order> list = orderService.getMyOrders(so);
+        return ResultGenerator.genSuccessResult(list);
     }
 
     @PostMapping("/execute")

@@ -2,6 +2,7 @@ package com.xfl.pingguopai.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
+import com.xfl.pingguopai.common.ServiceException;
 import com.xfl.pingguopai.dao.OrderMapper;
 import com.xfl.pingguopai.dao.OrderTaskMapper;
 import com.xfl.pingguopai.helper.OrderSO;
@@ -94,7 +95,21 @@ public class OrderServiceImpl extends AbstractServiceImpl<Order, Long> implement
     @Override
     public int excute(Long orderId, Integer orderStatus) {
         Assert.notNull(orderId, "必须传入用户id");
-        findById(orderId);
-        return 0;
+        Order order = findById(orderId);
+        if (order == null) {
+            throw new ServiceException("查无订单");
+        }
+        order.setOrderStatus(orderStatus);
+        int rtn = update(order);
+        return rtn;
+    }
+
+    @Override
+    public List<Order> getMyOrders(OrderSO so) {
+        logger.info("[OrderServiceImpl->getMyOrders] start ...");
+        logger.info("[getMyOrders->params] {}", JSON.toJSON(so));
+        List<Order> orderList = tOrderMapper.getMyOrders(so);
+        logger.info("[OrderServiceImpl->getOrderList] end ...");
+        return orderList;
     }
 }

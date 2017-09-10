@@ -59,14 +59,14 @@ public abstract class AbstractServiceImpl<T, PK extends Serializable> implements
         mapper.deleteByIds(ids);
     }
 
-    public void update(T model) {
+    public int update(T model) {
         if (model instanceof BaseModel) {
             Date date = Calendar.getInstance().getTime();
             BaseModel baseModel = (BaseModel)model;
             baseModel.setUpdateTime(date);
             model = (T)baseModel;
         }
-        mapper.updateByPrimaryKeySelective(model);
+        return mapper.updateByPrimaryKeySelective(model);
     }
 
     public T findById(PK id) {

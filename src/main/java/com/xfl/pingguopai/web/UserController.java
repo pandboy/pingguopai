@@ -2,6 +2,7 @@ package com.xfl.pingguopai.web;
 import com.xfl.pingguopai.common.Result;
 import com.xfl.pingguopai.common.ResultGenerator;
 import com.xfl.pingguopai.helper.OrderSO;
+import com.xfl.pingguopai.helper.enums.UserType;
 import com.xfl.pingguopai.model.Order;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.model.UserGps;
@@ -19,6 +20,7 @@ import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
 * Created by timely
@@ -62,13 +64,18 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
-    @PostMapping("/list")
+    @PostMapping("/listNormalAll")
     @PreAuthorize("hasRole('ADMIN')")
     public Result list(@RequestParam(defaultValue = "0") Integer pageNum, @RequestParam(defaultValue = "0") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> list = userService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
-        return ResultGenerator.genSuccessResult(pageInfo);
+        list.stream().filter(new Predicate<User>() {
+            @Override
+            public boolean test(User user) {
+                return user.getUserType() == UserType.ADMIN.value();
+            }
+        });
+        return ResultGenerator.genSuccessResult(list);
     }
     @PostMapping("/gps/latest")
     public Result getLatestLocation(@RequestParam Integer userId) {

@@ -2,6 +2,7 @@ package com.xfl.pingguopai.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.xfl.pingguopai.common.AbstractServiceImpl;
+import com.xfl.pingguopai.common.ServiceException;
 import com.xfl.pingguopai.dao.UserMapper;
 import com.xfl.pingguopai.helper.OrderSO;
 import com.xfl.pingguopai.helper.enums.OrderStatus;
@@ -13,6 +14,7 @@ import com.xfl.pingguopai.service.*;
 import com.xfl.pingguopai.helper.enums.UserType;
 import com.xfl.pingguopai.util.CollectionUtil;
 import com.xfl.pingguopai.vo.UserVO;
+import io.jsonwebtoken.lang.Assert;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +99,10 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long>
     @Override
     public int save(User model) {
         logger.info("[UserService->save] start username is {} ...", model.getUsername());
-
+        Assert.hasText(model.getUsername(), "请输入用户名");
+        if (findBy("username", model.getUsername()) != null) {
+            throw new ServiceException("用户名不允许重复");
+        }
         String password = model.getPassword();
         model.setVersion(0);
         model.setUserType(UserType.USER.value());
@@ -110,13 +115,14 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long>
     }
 
     @Override
-    public void update(User model) {
+    public int update(User model) {
         logger.info("[UserService->update] start username is {} ...", model.getUsername());
 
         model.setPassword(null); //增量更新，空的不更新
-        super.update(model);
 
+        int rtn = super.update(model);
         logger.info("[UserService->update] end username is {} ...", model.getUsername());
+        return rtn;
     }
 
     @Override

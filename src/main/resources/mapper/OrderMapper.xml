@@ -17,4 +17,17 @@
     <result column="distance" jdbcType="DOUBLE" property="distance" />
     <result column="order_status" jdbcType="BIT" property="orderStatus" />
   </resultMap>
+  <select id="getMyOrders" resultMap="BaseResultMap">
+    select t.* from t_order t, t_order_task t2
+    where t.id = t2.order_id
+    <if test="userId != null">
+      and t2.user_id=#{userId}
+    </if>
+    <if test="beginTime != null">
+      and t.create_time >= date_format(#{beginTime},'%Y-%m-%d  %H:%i:%s')
+    </if>
+    <if test="endTime != null">
+      <![CDATA[  AND t.create_time <  date_format(#{endTime},'%Y-%m-%d  %H:%i:%s')]]>
+    </if>
+  </select>
 </mapper>

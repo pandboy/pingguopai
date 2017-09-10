@@ -22,4 +22,6 @@ public interface OrderService extends AbstractService<Order, Long> {
     int excute(Long orderId, Integer orderStatus);
 
     List<Order> joinUser(List<Order> orderList);
+
+    List<Order> getMyOrders(OrderSO so);
 }
