@@ -34,13 +34,13 @@ public class UserController {
     @Resource
     private UserGpsService userGpsService;
 
-    @RequestMapping("/whoami")
+    @GetMapping("/whoami")
    // @PreAuthorize("hasRole('USER', 'ADMIN')")
-    public User user() {
-        return (User) SecurityContextHolder
+    public Result user() {
+        return ResultGenerator.genSuccessResult((User) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
-                .getPrincipal();
+                .getPrincipal());
     }
 
     @PostMapping("/add")
