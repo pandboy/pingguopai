@@ -1,9 +1,9 @@
 package com.xfl.pingguopai;
 
-import com.alibaba.druid.util.HttpClientUtils;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.xfl.pingguopai.model.Order;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.service.UserService;
 import org.junit.Assert;
@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 
 import static org.hamcrest.Matchers.is;
@@ -37,6 +36,7 @@ public class UserTest extends Tester {
         user.setPassword("abc123");
         user.setEmpName("my timely");
         user.setEmpName("my timely");
+        User u =  beanMapUtil.clone(user);
         //String json = JSON.toJSONString(user);
        // logger.info("*****json is {}", json);
       //  String params = "username=addtest2&passwordaddtest2&empName=addtest2";

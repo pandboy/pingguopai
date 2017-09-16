@@ -9,8 +9,10 @@ import com.xfl.pingguopai.common.ResultCode;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.model.UserTokenState;
 import com.xfl.pingguopai.security.TokenHelper;
+import com.xfl.pingguopai.service.CacheHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -38,15 +40,18 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
 	@Autowired
 	ObjectMapper objectMapper;
+	@Autowired
+	private CacheHelper cacheHelper;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication ) throws IOException, ServletException {
+
 		clearAuthenticationAttributes(request);
 		User user = (User)authentication.getPrincipal();
 
 		String jws = tokenHelper.generateToken( user.getUsername() );
-
+		cacheHelper.saveSession("session_"+user.getUsername(), user);
         // Create token auth Cookie
         /*Cookie authCookie = new Cookie( TOKEN_COOKIE, ( jws ) );
 		authCookie.setPath( "/" );

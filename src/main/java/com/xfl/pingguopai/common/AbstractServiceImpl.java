@@ -1,10 +1,9 @@
 package com.xfl.pingguopai.common;
 
 
-import com.github.pagehelper.PageInfo;
 import com.xfl.pingguopai.helper.PageList;
 import com.xfl.pingguopai.helper.PageSO;
-import com.xfl.pingguopai.util.DozerUtil;
+import com.xfl.pingguopai.util.BeanMapUtil;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public abstract class AbstractServiceImpl<T, PK extends Serializable> implements
     protected Mapper<T> mapper;
 
     @Autowired(required = false)
-    protected DozerUtil dozerUtil;
+    protected BeanMapUtil dozerUtil;
 
     private Class<T> modelClass;    // 当前泛型真实类型的Class
 
@@ -104,7 +103,7 @@ public abstract class AbstractServiceImpl<T, PK extends Serializable> implements
                 page.getPageSize());
         List<T> list = mapper.selectByExampleAndRowBounds(condition, rowBounds);
         int count  = mapper.selectCountByCondition(condition);
-        PageList pageInfo = new PageList(list, (count/page.getPageSize()) + 1);
+        PageList pageInfo = new PageList(list, count);
         return pageInfo;
     }
 

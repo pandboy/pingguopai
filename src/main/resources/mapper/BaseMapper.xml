@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Base">
+
+    <sql id="Order_By_Clause">
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(orderBy)">
+            ORDER BY t.${orderBy}
+        </if>
+        <!--
+            <if test="sorts != null and sorts.size > 0">
+                <foreach item="item" collection="sorts" separator=",">
+                    <if test="item.orderField !=null and item.orderField!=''">
+                        t.${item.orderField}
+                    </if>
+                    <if test="item.orderType !=null and item.orderType!=''">
+                        ${item.orderType}
+                    </if>
+                </foreach>
+            </if>
+        -->
+    </sql>
+</mapper>

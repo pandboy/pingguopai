@@ -60,6 +60,7 @@ public class OrderServiceImpl extends AbstractServiceImpl<Order, Long> implement
         logger.info("[getOrderList->params] {}", JSON.toJSON(so));
         Condition condition = new Condition(Order.class);
         condition.createCriteria().andBetween("createTime", so.getBeginTime(), so.getEndTime());
+        condition.orderBy(so.getOrderBy()).desc();
         PageList<Order> pageList = selectPage(condition, so);
         List<Order> orderList = joinUser(pageList.getDatas());
         pageList.setDatas(orderList);

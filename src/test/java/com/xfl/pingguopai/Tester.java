@@ -1,12 +1,11 @@
 package com.xfl.pingguopai;
 
 
-import com.alibaba.fastjson.JSON;
-import com.xfl.pingguopai.Application;
 import com.xfl.pingguopai.model.Authority;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.security.auth.AnonAuthentication;
 import com.xfl.pingguopai.security.auth.TokenBasedAuthentication;
+import com.xfl.pingguopai.util.BeanMapUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -44,7 +43,9 @@ public abstract class Tester {
     protected WebApplicationContext context;
 
     protected MockMvc mockMvc;
-    protected String token = "";
+
+    @Autowired
+    protected BeanMapUtil beanMapUtil;
     public abstract void testCRUD();
 
 

@@ -1,9 +1,12 @@
 package com.xfl.pingguopai.security.auth;
 
+import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.security.TokenHelper;
+import com.xfl.pingguopai.service.CacheHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +37,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     UserDetailsService userDetailsService;
+
+    @Autowired
+    private CacheHelper cacheHelper;
 
     /*
      * The below paths will get ignored by the filter
@@ -70,10 +76,13 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 logger.info("[TokenAuthenticationFilter->doFilterInternal] authToken is {} and username is {}",
                             authToken,
                             username);
-
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    // get user
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    User user = cacheHelper.getSessionUser("session_" + username);
+                    if (cacheHelper.getSessionUser("session_" + username) == null) {
+                        throw new BadCredentialsException("回话失效，请重新登录");
+                    }
+                        // get user
+                    UserDetails userDetails = (UserDetails) user;//userDetailsService.loadUserByUsername(username);
                     // create authentication
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                     authentication.setToken(authToken);

@@ -89,7 +89,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
                 .logoutSuccessHandler(logoutSuccess)
                 .deleteCookies(TOKEN_COOKIE);
-
     }
 
 }

@@ -2,6 +2,7 @@ package com.xfl.pingguopai.web;
 import com.xfl.pingguopai.common.Result;
 import com.xfl.pingguopai.common.ResultGenerator;
 import com.xfl.pingguopai.helper.OrderSO;
+import com.xfl.pingguopai.helper.PageList;
 import com.xfl.pingguopai.helper.enums.UserType;
 import com.xfl.pingguopai.model.Order;
 import com.xfl.pingguopai.model.User;
@@ -86,7 +87,7 @@ public class UserController {
     @PostMapping("/order/distance")
     @PreAuthorize("hasRole('ADMIN')")
     public Result getSalary(OrderSO so) {
-        PageInfo<UserVO> pageInfo = userService.getUserOrderDistanceList(so);
+        PageList<UserVO> pageInfo = userService.getUserOrderDistanceList(so);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 }

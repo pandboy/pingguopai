@@ -1,7 +1,5 @@
 package com.xfl.pingguopai.util;
 
-import org.apache.commons.collections.CollectionUtils;
-
 import java.util.*;
 
 /**

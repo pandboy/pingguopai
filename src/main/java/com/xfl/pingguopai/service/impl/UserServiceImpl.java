@@ -5,17 +5,16 @@ import com.xfl.pingguopai.common.AbstractServiceImpl;
 import com.xfl.pingguopai.common.ServiceException;
 import com.xfl.pingguopai.dao.UserMapper;
 import com.xfl.pingguopai.helper.OrderSO;
+import com.xfl.pingguopai.helper.PageList;
 import com.xfl.pingguopai.helper.enums.OrderStatus;
+import com.xfl.pingguopai.helper.enums.UserType;
 import com.xfl.pingguopai.model.Authority;
 import com.xfl.pingguopai.model.Order;
 import com.xfl.pingguopai.model.User;
 import com.xfl.pingguopai.model.UserAuthority;
 import com.xfl.pingguopai.service.*;
-import com.xfl.pingguopai.helper.enums.UserType;
-import com.xfl.pingguopai.util.CollectionUtil;
 import com.xfl.pingguopai.vo.UserVO;
 import io.jsonwebtoken.lang.Assert;
-import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -126,7 +122,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long>
     }
 
     @Override
-    public PageInfo<UserVO> getUserOrderDistanceList(OrderSO so) {
+    public PageList<UserVO> getUserOrderDistanceList(OrderSO so) {
         logger.info("[UserService->getUserOrderDistanceList] start ...");
 
         Condition condition = new Condition(Order.class);
@@ -154,6 +150,6 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long>
         }
         logger.info("[UserService->getUserOrderDistanceList] end ...");
 
-        return new PageInfo<>(userVOs);
+        return new PageList<>(userVOs, userVOs.size());
     }
 }

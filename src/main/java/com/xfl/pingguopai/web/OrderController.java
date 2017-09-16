@@ -52,6 +52,7 @@ public class OrderController {
     @PostMapping("/list")
     @PreAuthorize("hasRole('ADMIN')")
     public Result list(OrderSO so) {
+        so.setOrderBy("createTime");
         PageList<Order> pageInfo = orderService.getOrderList(so);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
@@ -60,6 +61,8 @@ public class OrderController {
     public Result getMyOrders(OrderSO so) {
         User user = SecurityContextUtil.logingUser();
         so.setUserId(user.getId());
+        so.setOrderBy("create_time").desc();
+        so.reasonable(false);
         List<Order> list = orderService.getMyOrders(so);
         return ResultGenerator.genSuccessResult(list);
     }
@@ -69,6 +72,6 @@ public class OrderController {
     public Result execute(@RequestParam Long orderId, @RequestParam Integer orderStatus) {
         int rtn = orderService.excute(orderId, orderStatus);
 
-        return rtn == 1 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("分配失败");
+        return rtn == 1 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("接受失败");
     }
 }

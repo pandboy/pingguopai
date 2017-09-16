@@ -1,9 +1,10 @@
 package com.xfl.pingguopai.util;
 
-import org.dozer.DozerBeanMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.dozer.DozerBeanMapperBuilder;
+import org.dozer.Mapper;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +12,13 @@ import java.util.List;
  * Created by timely on 2017/9/4.
  */
 @Component
-public class DozerUtil {
-    @Autowired(required = false)
-    private DozerBeanMapper mapper;
+public class BeanMapUtil {
+    private Mapper mapper = null;
 
+    @PostConstruct
+    private void init() {
+        mapper = DozerBeanMapperBuilder.buildDefault();
+    }
     @SuppressWarnings("unchecked")
     public <P> P clone(P base) {
         if (base == null) {
@@ -67,11 +71,10 @@ public class DozerUtil {
             return null;
         } else {
             List<P> targetList = new ArrayList<P>();
-            for (V vo : baseList) {
-
-                targetList.add((P) convert(vo, target));
+            for (V v : baseList) {
+                targetList.add(convert(v, target));
             }
-            return targetList;
+            return  targetList;
         }
 
     }

@@ -52,6 +52,7 @@ public class PageSO {
      * 当设置为true的时候，如果pagesize设置为0（或RowBounds的limit=0），就不执行分页，返回全部结果
      */
     private Boolean pageSizeZero;
+    private String sort;
 
     public PageSO() {
         this(1, 50, true, null);
@@ -282,4 +283,26 @@ public class PageSO {
                 ", pageSizeZero=" + pageSizeZero +
                 '}';
     }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public PageSO desc() {
+        if (this.getOrderBy() != null) {
+            this.setOrderBy(this.getOrderBy() + " DESC");
+        }
+        return this;
+    }
+    public PageSO asc() {
+        if (this.getOrderBy() != null) {
+            this.setOrderBy(this.getOrderBy() + " asc");
+        }
+        return this;
+    }
+
 }
