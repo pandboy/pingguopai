@@ -145,19 +145,13 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //接口签名认证拦截器，该签名认证比较简单，实际项目中可以使用Json Web Token或其他更好的方式替代。
-        if (!"dev".equals(env)) { //开发环境忽略签名认证
+        /*if (!"dev".equals(env)) { //开发环境忽略签名认证
             registry.addInterceptor(new HandlerInterceptorAdapter() {
                 @Override
                 public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
                     //验证签名
                     boolean pass = validateSign(request);
                     if (pass) {
-                        /*if (hasAuth(request, response)) {
-                            return true;
-                        }
-                        Result result = new Result();
-                        result.setCode(ResultCode.PERMIT).setMessage("拒绝访问");
-                        responseResult(response, result);*/
                         return true;
                     } else {
                         logger.warn("签名认证失败，请求接口：{}，请求IP：{}，请求参数：{}",
@@ -170,41 +164,8 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
                     }
                 }
 
-               /* private boolean hasAuth(HttpServletRequest request, HttpServletResponse response) {
-                    String url = request.getRequestURI();
-                    if (url.startsWith("/login")) {
-                        return true;
-                    }
-                    if (url.startsWith("/api/")) {
-                        String token = request.getHeader("token");
-                        User user = cacheHelper.getSessionUser(token);
-                        if (user != null) {
-                            if (user.getUserType() == 1) {
-                                return true;
-                            } else if (user.getUserType() == 3) {
-                                if (url.startsWith("/api/normal/")) {
-                                    return true;
-                                } else {
-                                    Result result = new Result();
-                                    result.setCode(ResultCode.PERMIT).setMessage("无权限访问");
-                                    responseResult(response, result);
-                                    return false;
-                                }
-                            }
-                        } else {
-                            Result result = new Result();
-                            result.setCode(ResultCode.UNAUTHORIZED).setMessage("请登录");
-                            responseResult(response, result);
-                            return false;
-                        }
-                    }
-                    Result result = new Result();
-                    result.setCode(ResultCode.NOT_FOUND).setMessage("非法路径请求");
-                    responseResult(response, result);
-                    return false;
-                }*/
             });
-        }
+        }*/
     }
 
     private void responseResult(HttpServletResponse response, Result result) {
