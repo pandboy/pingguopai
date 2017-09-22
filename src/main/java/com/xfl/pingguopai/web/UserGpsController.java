@@ -19,13 +19,12 @@ import java.util.List;
 */
 @RestController
 @RequestMapping("/auth/user/gps")
-@PreAuthorize("hasRole('ADMIN', 'USER')")
-
 public class UserGpsController {
     @Resource
     private UserGpsService userGpsService;
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('USER')")
     public Result add(UserGps userGps) {
         userGpsService.save(userGps);
         return ResultGenerator.genSuccessResult();
