@@ -22,6 +22,7 @@ import tk.mybatis.mapper.entity.Condition;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
 * Created by timely
@@ -70,12 +71,8 @@ public class UserController {
     public Result list(@RequestParam(defaultValue = "0") Integer pageNum, @RequestParam(defaultValue = "0") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> list = userService.findAll();
-        list.stream().filter(new Predicate<User>() {
-            @Override
-            public boolean test(User user) {
-                return user.getUserType() == UserType.ADMIN.value();
-            }
-        });
+        list = list.stream().filter(user -> user.getUserType() != UserType.ADMIN.value())
+        .collect(Collectors.toList());
         return ResultGenerator.genSuccessResult(list);
     }
     @PostMapping("/gps/latest")

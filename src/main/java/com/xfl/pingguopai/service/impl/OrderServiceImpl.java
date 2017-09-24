@@ -109,6 +109,7 @@ public class OrderServiceImpl extends AbstractServiceImpl<Order, Long> implement
     public List<Order> getMyOrders(OrderSO so) {
         logger.info("[OrderServiceImpl->getMyOrders] start ...");
         logger.info("[getMyOrders->params] {}", JSON.toJSON(so));
+        so.setPageSize(Integer.MAX_VALUE);//
         List<Order> orderList = tOrderMapper.getMyOrders(so);
         logger.info("[OrderServiceImpl->getOrderList] end ...");
         return orderList;
