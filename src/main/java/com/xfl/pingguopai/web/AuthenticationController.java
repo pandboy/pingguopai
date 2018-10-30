@@ -36,9 +36,6 @@ public class AuthenticationController {
 
         String authToken = tokenHelper.getToken( request );
         if (authToken != null && tokenHelper.canTokenBeRefreshed(authToken)) {
-            // check user password last update
-            /*if(tokenHelper.validateToken(authToken, userDetails)) {
-            }*/
             String refreshedToken = tokenHelper.refreshToken(authToken);
             //不需要cookie
             Cookie authCookie = new Cookie( TOKEN_COOKIE, ( refreshedToken ) );
