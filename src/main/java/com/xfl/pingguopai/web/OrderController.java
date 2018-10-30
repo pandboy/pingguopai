@@ -41,8 +41,6 @@ public class OrderController {
         return ResultGenerator.genSuccessResult();
     }
 
-  //  @PostMapping("/update")
-    //@PreAuthorize("hasRole('ADMIN')")
     public Result update(Order order) {
         orderService.update(order);
         return ResultGenerator.genSuccessResult();
