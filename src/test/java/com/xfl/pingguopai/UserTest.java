@@ -37,10 +37,6 @@ public class UserTest extends Tester {
         user.setEmpName("my timely");
         user.setEmpName("my timely");
         User u =  beanMapUtil.clone(user);
-        //String json = JSON.toJSONString(user);
-       // logger.info("*****json is {}", json);
-      //  String params = "username=addtest2&passwordaddtest2&empName=addtest2";
-
         try {
             String json = (new ObjectMapper()).writeValueAsString(user);
 
